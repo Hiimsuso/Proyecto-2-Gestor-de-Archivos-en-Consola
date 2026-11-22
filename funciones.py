@@ -1,10 +1,10 @@
 import os
 from datetime import datetime
-
+from colorama import Fore, Style
 
 def mostrar_menu():
     print(f"""
-        === GESTOR DE ARCHIVOS ===
+        {Fore.CYAN}=== GESTOR DE ARCHIVOS ===
 
         Ruta actual: {os.getcwd()}
 
@@ -15,76 +15,65 @@ def mostrar_menu():
         5. Eliminar un archivo o carpeta
         6. Mostrar información
         7. Salir
-      """)
+      {Style.RESET_ALL}""")
 
 def listar_contenido():
     return os.listdir()
 
-def crear_directorio():
+def crear_directorio(nombre):
     try:
-      nombre = input("introduce el nombre de la carpeta: ")
       os.mkdir(nombre)
+      return True
     except FileExistsError:
-        print("El directorio ya existe")
+      return False
 
-def crear_archivo():
+def crear_archivo(nombre, contenido):
     try:
-      nombre = input("introduce el nombre del archivo: ")
-      contenido = input("Indica que quieres escribir en el archivo: ")
       with open(nombre, "x", encoding='utf-8') as archivo:
           archivo.write(contenido)
+      return True
     except FileExistsError:
-        print("El archivo ya existe")
+      return False
 
-def escribir_en_archivo():
-    archivo = input("Introduce el archivo sobre el que quieres escribir: ")
-    if os.path.isfile(archivo) == False:
-        print("Debes introducir un nombre correcto de archivo")
-    else:
-        datos = input("Introduce la información que deseas guardar: ")
+def escribir_en_archivo(archivo, datos):
+    if os.path.isfile(archivo):
         with open(archivo, "a", encoding="utf-8") as documento:
-          documento.write(datos)
-
-
-def eliminar_elemento():
-    try:
-      archivo = input("Introduce el archivo que deseas eliminar: ")
-      if os.path.isdir(archivo):
-          os.rmdir(archivo)
-      elif os.path.isfile(archivo):
-          os.remove(archivo)
-      else:
-          print("El archivo/carpeta indicado no existe")
-    except OSError:
-        print("No se ha podido eliminar el archivo o directorio indicado")
-
-def mostrar_informacion():
-    nombre = input("Introduce el nombre del archivo o carpeta: ")
-    if os.path.isfile(nombre):
-        tamanio = os.path.getsize(nombre)
-        tiempo = os.path.getmtime(nombre)
-        fecha = datetime.fromtimestamp(tiempo)
-        print(f"""
-        Nombre: {nombre}
-        Tipo: Archivo
-        Tamaño: {tamanio}
-        Última modificación: {fecha.strftime("%d/%m/%Y")}
-
-        """)
-    elif os.path.isdir(nombre):
-        tamanio = os.path.getsize(nombre)
-        tiempo = os.path.getmtime(nombre)
-        fecha = datetime.fromtimestamp(tiempo)
-        print(f"""
-        Nombre: {nombre}
-        Tipo: Directorio
-        Tamaño: {tamanio}
-        Última modificación: {fecha.strftime("%d/%m/%Y")}
-        """)
+            documento.write(f"\n{datos}")
+        return True
     else:
-        print("El nombre del archivo/documento introducido no es correcto.")
+        return False
 
 
-def main():
-    # Bucle principal del programa
-    pass
+def eliminar_elemento(archivo):
+  try:
+    if os.path.isdir(archivo):
+      os.rmdir(archivo)
+      return f"{Fore.GREEN}El directorio {archivo} ha sido eliminado correctamente{Style.RESET_ALL}"
+    elif os.path.isfile(archivo):
+      os.remove(archivo)
+      return f"{Fore.GREEN}El archivo {archivo} ha sido eliminado correctamente{Style.RESET_ALL}"
+    else:
+      return f"{Fore.RED}El archivo/carpeta indicado no existe{Style.RESET_ALL}"
+  except OSError:
+    return f"{Fore.RED}No se ha podido eliminar el archivo o directorio indicado{Style.RESET_ALL}"
+
+def mostrar_informacion(nombre):
+    if os.path.isfile(nombre):
+      tipo = "Archivo"
+    elif os.path.isdir(nombre):
+      tipo = "Directorio"
+    else:
+       return False
+
+    tamanio = os.path.getsize(nombre)
+    tiempo = os.path.getmtime(nombre)
+    fecha = datetime.fromtimestamp(tiempo)
+    return f"""
+    Nombre: {nombre}
+    Tipo: {tipo}
+    Tamaño: {tamanio}
+    Última modificación: {fecha.strftime("%d/%m/%Y")}
+
+    """
+
+
