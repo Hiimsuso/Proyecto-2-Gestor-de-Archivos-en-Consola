@@ -1,49 +1,61 @@
+
 import os
 from datetime import datetime
 from colorama import Fore, Style
 
+
+# Muestra el menú y la ruta actual
 def mostrar_menu():
-    print(f"""
-        {Fore.CYAN}=== GESTOR DE ARCHIVOS ===
+  print(f"""
+    {Fore.CYAN}=== GESTOR DE ARCHIVOS ===
 
-        Ruta actual: {os.getcwd()}
+    Ruta actual: {os.getcwd()}
 
-        1. Listar archivos y carpetas
-        2. Crear una carpeta
-        3. Crear un archivo de texto
-        4. Escribir en un archivo
-        5. Eliminar un archivo o carpeta
-        6. Mostrar información
-        7. Salir
-      {Style.RESET_ALL}""")
+    1. Listar archivos y carpetas
+    2. Crear una carpeta
+    3. Crear un archivo de texto
+    4. Escribir en un archivo
+    5. Eliminar un archivo o carpeta
+    6. Mostrar información
+    7. Salir
+    {Style.RESET_ALL}""")
 
+
+# Devuelve los archivos y carpetas del directorio actual
 def listar_contenido():
-    return os.listdir()
+  return os.listdir()
 
+
+# Crea una carpeta y devuelve si se ha creado correctamente
 def crear_directorio(nombre):
-    try:
-      os.mkdir(nombre)
-      return True
-    except FileExistsError:
-      return False
+  try:
+    os.mkdir(nombre)
+    return True
+  except FileExistsError:
+    return False
 
+
+# Crea un archivo nuevo y escribe su contenido inicial
 def crear_archivo(nombre, contenido):
-    try:
-      with open(nombre, "x", encoding='utf-8') as archivo:
-          archivo.write(contenido)
-      return True
-    except FileExistsError:
-      return False
+  try:
+    with open(nombre, "x", encoding='utf-8') as archivo:
+      archivo.write(contenido)
+    return True
+  except FileExistsError:
+    return False
 
+
+# Añade texto al final de un archivo existente
 def escribir_en_archivo(archivo, datos):
-    if os.path.isfile(archivo):
-        with open(archivo, "a", encoding="utf-8") as documento:
-            documento.write(f"\n{datos}")
-        return True
-    else:
-        return False
+  if os.path.isfile(archivo):
+    with open(archivo, "a", encoding="utf-8") as documento:
+      documento.write(f"\n{datos}")
+    return True
+  else:
+    return False
 
 
+# Elimina un archivo o un directorio vacío
 def eliminar_elemento(archivo):
   try:
     if os.path.isdir(archivo):
@@ -57,23 +69,23 @@ def eliminar_elemento(archivo):
   except OSError:
     return f"{Fore.RED}No se ha podido eliminar el archivo o directorio indicado{Style.RESET_ALL}"
 
+
+# Obtiene el tipo, tamaño y fecha de modificación de un elemento
 def mostrar_informacion(nombre):
-    if os.path.isfile(nombre):
-      tipo = "Archivo"
-    elif os.path.isdir(nombre):
-      tipo = "Directorio"
-    else:
-       return False
+  if os.path.isfile(nombre):
+    tipo = "Archivo"
+  elif os.path.isdir(nombre):
+    tipo = "Directorio"
+  else:
+    return False
 
-    tamanio = os.path.getsize(nombre)
-    tiempo = os.path.getmtime(nombre)
-    fecha = datetime.fromtimestamp(tiempo)
-    return f"""
-    Nombre: {nombre}
-    Tipo: {tipo}
-    Tamaño: {tamanio}
-    Última modificación: {fecha.strftime("%d/%m/%Y")}
+  tamanio = os.path.getsize(nombre)
+  tiempo = os.path.getmtime(nombre)
+  fecha = datetime.fromtimestamp(tiempo)
 
-    """
-
-
+  return f"""
+  Nombre: {nombre}
+  Tipo: {tipo}
+  Tamaño: {tamanio}
+  Última modificación: {fecha.strftime("%d/%m/%Y")}
+  """

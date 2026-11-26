@@ -16,9 +16,9 @@ def main():
     if opcion == 1:
       for i in fc.listar_contenido():
         if os.path.isfile(i):
-          print(f"Archivo: {i}")
+          print(f"{Fore.BLUE}Archivo: {i}{Style.RESET_ALL}")
         elif os.path.isdir(i):
-          print(f"Carpeta: {i}")
+          print(f"{Fore.YELLOW}Carpeta: {i}{Style.RESET_ALL}")
 
     elif opcion == 2:
       nombre = input(f"{Fore.YELLOW}introduce el nombre de la carpeta: {Style.RESET_ALL}")
@@ -46,9 +46,9 @@ def main():
       valor = fc.escribir_en_archivo(archivo, datos)
 
       if valor:
-          print(f"{Fore.GREEN}Información guardada correctamente{Style.RESET_ALL}")
+        print(f"{Fore.GREEN}Información guardada correctamente{Style.RESET_ALL}")
       else:
-          print(f"{Fore.RED}Debes introducir un nombre correcto de archivo{Style.RESET_ALL}")
+        print(f"{Fore.RED}Debes introducir un nombre correcto de archivo{Style.RESET_ALL}")
 
     elif opcion == 5:
       archivo = input(f"{Fore.YELLOW}Introduce el archivo que deseas eliminar: {Style.RESET_ALL}")
@@ -56,18 +56,18 @@ def main():
       print(valor)
 
     elif opcion == 6:
-        nombre = input(f"{Fore.YELLOW}Introduce el nombre del archivo o carpeta: {Style.RESET_ALL}")
-        valor = fc.mostrar_informacion(nombre)
-        if valor:
-          print(valor)
-        else:
-          print(f"{Fore.RED}El nombre indicado es incorrecto o no existe{Style.RESET_ALL}")
+      nombre = input(f"{Fore.YELLOW}Introduce el nombre del archivo o carpeta: {Style.RESET_ALL}")
+      valor = fc.mostrar_informacion(nombre)
+      if valor:
+        print(valor)
+      else:
+        print(f"{Fore.RED}El nombre indicado es incorrecto o no existe{Style.RESET_ALL}")
 
     elif opcion == 7:
-        break
+      break
 
     else:
       print(f"{Fore.RED}Introduce un valor entre 1 y 7{Style.RESET_ALL}")
 
 if __name__ == "__main__":
-    main()
+  main()
